@@ -6,14 +6,18 @@ RUN apk add --no-cache git
 RUN npm install -g bower
 
 # Create folder for cryptpad
-RUN mkdir /cryptpad
-WORKDIR /cryptpad
+# RUN mkdir /cryptpad
+# WORKDIR /cryptpad
+
+COPY . /cryptpad-wrapper
+
+WORKDIR /cryptpad-wrapper/cryptpad-docker/cryptpad
 
 # Get cryptpad from repository submodule
-COPY cryptpad-docker/cryptpad /cryptpad
+# COPY cryptpad-docker/cryptpad /cryptpad
 
-RUN sed -i "s@//httpAddress: '::'@httpAddress: '0.0.0.0'@" /cryptpad/config/config.example.js
-RUN sed -i "s@installMethod: 'unspecified'@installMethod: 'docker-alpine'@" /cryptpad/config/config.example.js
+RUN sed -i "s@//httpAddress: '::'@httpAddress: '0.0.0.0'@" /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
+RUN sed -i "s@installMethod: 'unspecified'@installMethod: 'docker-alpine'@" /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
 
 # Install dependencies
 RUN npm install --production \
@@ -30,7 +34,7 @@ RUN apk add --no-cache yq bash
 #     && adduser -u 4001 -S -D -g 4001 -H -h /cryptpad cryptpad
 
 # Copy cryptpad with installed modules
-COPY --from=build --chown=cryptpad /cryptpad /cryptpad
+COPY --from=build --chown=cryptpad /cryptpad-wrapper/cryptpad-docker/cryptpad /cryptpad
 COPY cryptpad-docker/cryptpad/docs/example.nginx.conf /etc/nginx/nginx.conf
 
 # entrypoint

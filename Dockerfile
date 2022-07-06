@@ -2,14 +2,17 @@
 
 FROM node:16-alpine AS build
 
+# git submodules reference fix
+# ENV GIT_DIR=
+
 # Install requirements to clone repository and install deps
 RUN apk add --no-cache git \
     && npm install -g bower
 
 # Get cryptpad from repository submodule
-COPY cryptpad-docker/cryptpad /cryptpad
+COPY . /cryptpad-wrapper
 
-WORKDIR /cryptpad
+WORKDIR /cryptpad-wrapper/cryptpad-docker/cryptpad
 
 # Install dependencies
 RUN npm install --production \
@@ -19,7 +22,7 @@ RUN npm install --production \
 # Create actual cryptpad image
 FROM node:16-alpine
 
-
+RUN apk add --no-cache yq bash
 
 RUN set -x \
     # Create users and groups for nginx and cryptpad
@@ -40,7 +43,7 @@ COPY --from=nginx:latest /etc/nginx /etc/nginx
 RUN sed -i "/default_type/a \\    server_tokens off;" /etc/nginx/nginx.conf
 
 # Copy cryptpad with installed modules
-COPY --from=build --chown=cryptpad /cryptpad /cryptpad
+COPY --from=build --chown=cryptpad /cryptpad-wrapper/cryptpad-docker/cryptpad /cryptpad
 
 # Copy supervisord conf file
 COPY cryptpad-docker/supervisord.conf /etc/supervisord.conf

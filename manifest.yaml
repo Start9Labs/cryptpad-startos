@@ -113,11 +113,11 @@ interfaces:
     description: CryptPad Main UI, handles sensitive computation like processing of cryptographic keys.
     tor-config:
       port-mapping:
-        443: "443"
+        80: "3000"
     lan-config:
       443:
         ssl: true
-        internal: 443
+        internal: 3000
     ui: true
     protocols:
       - tcp
@@ -127,15 +127,43 @@ interfaces:
     description: Cryptpad Sandbox Interface, handles insensitive data and computation.
     tor-config:
       port-mapping:
-        443: "443"
+        80: "3000"
     lan-config:
       443:
         ssl: true
-        internal: 443
+        internal: 3000
     ui: true
     protocols:
       - tcp
       - http
+  # main:
+  #   name: Web UI
+  #   description: CryptPad Main UI, handles sensitive computation like processing of cryptographic keys.
+  #   tor-config:
+  #     port-mapping:
+  #       80: "80"
+  #   lan-config:
+  #     443:
+  #       ssl: true
+  #       internal: 80
+  #   ui: true
+  #   protocols:
+  #     - tcp
+  #     - http
+  # sandbox:
+  #   name: Sandbox UI
+  #   description: Cryptpad Sandbox Interface, handles insensitive data and computation.
+  #   tor-config:
+  #     port-mapping:
+  #       80: "80"
+  #   lan-config:
+  #     443:
+  #       ssl: true
+  #       internal: 80
+  #   ui: true
+  #   protocols:
+  #     - tcp
+  #     - http
   # sandbox:
   #   name: Cryptpad Sandbox Interface
   #   description: 
