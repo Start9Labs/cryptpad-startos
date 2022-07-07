@@ -9,7 +9,8 @@ RUN npm install -g bower
 # RUN mkdir /cryptpad
 # WORKDIR /cryptpad
 
-COPY . /cryptpad-wrapper
+COPY ./.git /cryptpad-wrapper/.git
+COPY ./cryptpad-docker /cryptpad-wrapper/cryptpad-docker
 
 WORKDIR /cryptpad-wrapper/cryptpad-docker/cryptpad
 
@@ -35,7 +36,7 @@ RUN apk add --no-cache yq bash
 
 # Copy cryptpad with installed modules
 COPY --from=build --chown=cryptpad /cryptpad-wrapper/cryptpad-docker/cryptpad /cryptpad
-COPY cryptpad-docker/cryptpad/docs/example.nginx.conf /etc/nginx/nginx.conf
+# COPY cryptpad-docker/cryptpad/docs/example.nginx.conf /etc/nginx/nginx.conf
 
 # entrypoint
 ADD docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh

@@ -23,5 +23,5 @@ cryptpad.s9pk: manifest.yaml assets/compat/config_spec.yaml assets/compat/config
 # 	DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --tag start9/cryptpad/main:$(VERSION) --platform=linux/arm64 -o type=docker,dest=image.tar .
 # 	cp nginx.image.tar image.tar
 
-image.tar: Dockerfile docker_entrypoint.sh check-web.sh
+image.tar: Dockerfile-alpine docker_entrypoint.sh check-web.sh
 	DOCKER_CLI_EXPERIMENTAL=enabled docker buildx build --tag start9/cryptpad/main:$(VERSION) --platform=linux/arm64 -o type=docker,dest=image.tar -f Dockerfile-alpine .
