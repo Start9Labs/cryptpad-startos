@@ -54,21 +54,4 @@ RUN chmod +x /usr/local/bin/check-web.sh
 WORKDIR /cryptpad
 
 # Create directories
-RUN mkdir blob block customize data datastore
-
-# # Volumes for data persistence
-# VOLUME /cryptpad/blob
-# VOLUME /cryptpad/block
-# VOLUME /cryptpad/customize
-# VOLUME /cryptpad/data
-# VOLUME /cryptpad/datastore
-
-# # Ports
-# EXPOSE 3000 3001
-
-# # Run cryptpad on startup
-# CMD ["npm", "start"]
-
-# FROM chrisguida/cryptpad:5.0.0
-# FROM 100fe6257636
-
+# RUN mkdir blob block customize data datastore

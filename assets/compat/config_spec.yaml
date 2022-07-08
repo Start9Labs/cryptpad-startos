@@ -14,3 +14,7 @@ sandbox-tor-address:
   package-id: cryptpad
   target: tor-address
   interface: sandbox
+use-tor-instead-of-lan:
+  name: Use Tor Instead of Lan
+  description: Toggle this on to enable cryptpad to listen over Tor, and disable listening on .local. Toggle it off to switch back to .local.
+  type: boolean

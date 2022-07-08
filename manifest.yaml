@@ -29,7 +29,6 @@ main:
     customize: /cryptpad/customize
     data: /cryptpad/data
     datastore: /cryptpad/datastore
-  io-format: yaml
 health-checks:
   # version:
   #   name: Database
@@ -51,35 +50,9 @@ health-checks:
     inject: true
 config:
   get:
-    type: docker
-    image: compat
-    system: true
-    entrypoint: compat
-    args:
-      - config
-      - get
-      - /datadir
-      - "/mnt/assets/config_spec.yaml"
-    mounts:
-      compat: /mnt/assets
-      main: /datadir
-    io-format: yaml
+    type: script
   set:
-    type: docker
-    image: compat
-    system: true
-    entrypoint: compat
-    args:
-      - config
-      - set
-      - cryptpad
-      - /datadir
-      - "/mnt/assets/config_rules.yaml"
-      # - "/mnt/assets/dependencies.yaml"
-    mounts:
-      compat: /mnt/assets
-      main: /datadir
-    io-format: yaml
+    type: script
 properties: ~
   # type: docker
   # image: compat

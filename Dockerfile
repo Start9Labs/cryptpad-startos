@@ -1,18 +1,17 @@
 # Multistage build to reduce image size and increase security
-
 FROM node:16-alpine AS build
 
-# git submodules reference fix
-# ENV GIT_DIR=
-
 # Install requirements to clone repository and install deps
-RUN apk add --no-cache git \
-    && npm install -g bower
+RUN apk add --no-cache git
+RUN npm install -g bower
 
-# Get cryptpad from repository submodule
-COPY . /cryptpad-wrapper
+COPY ./.git /cryptpad-wrapper/.git
+COPY ./cryptpad-docker /cryptpad-wrapper/cryptpad-docker
 
 WORKDIR /cryptpad-wrapper/cryptpad-docker/cryptpad
+
+RUN sed -i "s@//httpAddress: '::'@httpAddress: '0.0.0.0'@" /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
+RUN sed -i "s@installMethod: 'unspecified'@installMethod: 'docker-alpine'@" /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
 
 # Install dependencies
 RUN npm install --production \
@@ -22,62 +21,28 @@ RUN npm install --production \
 # Create actual cryptpad image
 FROM node:16-alpine
 
-RUN apk add --no-cache yq bash
+RUN apk add --no-cache bash tini
+RUN wget https://github.com/mikefarah/yq/releases/download/v4.25.3/yq_linux_arm.tar.gz -O - |\
+    tar xz && mv yq_linux_arm /usr/bin/yq
 
-RUN set -x \
-    # Create users and groups for nginx and cryptpad
-    && addgroup -g 4001 -S cryptpad \
-    && adduser -u 4001 -S -D -G cryptpad -H -h /dev/null cryptpad \
-    \
-    # Create needed dir for nginx pid
-    && mkdir -p /var/run/nginx \
-    \
-    # Install packages
-    && apk add supervisor nginx openssl zlib pcre \
-    && rm -rf /etc/nginx
-
-# Copy nginx conf from official image
-COPY --from=nginx:latest /etc/nginx /etc/nginx
-
-# Disable server tokens
-RUN sed -i "/default_type/a \\    server_tokens off;" /etc/nginx/nginx.conf
+# Create user and group for cryptpad so it does not run as root
+# RUN addgroup -g 4001 -S cryptpad \
+#     && adduser -u 4001 -S -D -g 4001 -H -h /cryptpad cryptpad
 
 # Copy cryptpad with installed modules
 COPY --from=build --chown=cryptpad /cryptpad-wrapper/cryptpad-docker/cryptpad /cryptpad
+# COPY cryptpad-docker/cryptpad/docs/example.nginx.conf /etc/nginx/nginx.conf
 
-# Copy supervisord conf file
-COPY cryptpad-docker/supervisord.conf /etc/supervisord.conf
+# entrypoint
+ADD docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh
+RUN chmod +x /usr/local/bin/docker_entrypoint.sh
 
-# Copy docker-entrypoint.sh script
-COPY cryptpad-docker/docker-entrypoint.sh /docker-entrypoint.sh
+# health check
+ADD ./check-web.sh /usr/local/bin/check-web.sh
+RUN chmod +x /usr/local/bin/check-web.sh
 
 # Set workdir to cryptpad
 WORKDIR /cryptpad
 
 # Create directories
-RUN mkdir blob block customize data datastore \
-    && chown cryptpad:cryptpad blob block customize data datastore
-
-# Volumes for data persistence
-# VOLUME /cryptpad/blob \
-#        /cryptpad/block \
-#        /cryptpad/customize \
-#        /cryptpad/data \
-#        /cryptpad/datastore
-
-# # Ports
-# EXPOSE 80 443
-
-# ENTRYPOINT ["/bin/sh", "/docker-entrypoint.sh"]
-
-# CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
-
-# entrypoint
-ADD docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh
-RUN chmod +x /usr/local/bin/docker_entrypoint.sh
-# RUN chown cryptpad /usr/local/bin/docker_entrypoint.sh
-
-# health check
-ADD ./check-web.sh /usr/local/bin/check-web.sh
-RUN chmod +x /usr/local/bin/check-web.sh
-# RUN chown cryptpad /usr/local/bin/check-web.sh
+# RUN mkdir blob block customize data datastore
