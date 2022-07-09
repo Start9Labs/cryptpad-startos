@@ -7,8 +7,6 @@ TOR_ADDRESS=$(yq e '.tor-address' /cryptpad/main/start9/config.yaml)
 SANDBOX_TOR_ADDRESS=$(yq e '.sandbox-tor-address' /cryptpad/main/start9/config.yaml)
 LAN_ADDRESS=$(echo "$TOR_ADDRESS" | sed -r 's/(.+)\.onion/\1.local/g')
 SANDBOX_LAN_ADDRESS=$(echo "$SANDBOX_TOR_ADDRESS" | sed -r 's/(.+)\.onion/\1.local/g')
-ADMIN_PUBLIC_KEY=$(yq e '.admin-public-key' /cryptpad/main/start9/config.yaml)
-ADMIN_EMAIL=$(yq e '.admin-email' /cryptpad/main/start9/config.yaml)
 
 if [ "$(yq ".use-tor-instead-of-lan" /cryptpad/main/start9/config.yaml)" = "true" ]; then
   CPAD_MAIN_DOMAIN="$TOR_ADDRESS"
@@ -27,12 +25,14 @@ sed -i  -e "s@\(httpUnsafeOrigin:\).*[^,]@\1 '$PROTOCOL://$CPAD_MAIN_DOMAIN'@" \
 # sed -i  -e "s~\(adminEmail:\).*[^,]~\1 '$CPAD_ADMIN_EMAIL'~" -e '/^ *adminEmail.*/a\ \ \ \ adminKeys: ' $CPAD_CONF
 # sed -i  -e "s~\(adminKeys:\).*[^,]~\1 '$CPAD_ADMIN_EMAIL'~" $CPAD_CONF
 
-if [ ! -z "$ADMIN_PUBLIC_KEY" ]; then
+if yq -e '.admin-public-key' /cryptpad/main/start9/config.yaml > /dev/null 2>&1; then
+  ADMIN_PUBLIC_KEY=$(yq e '.admin-public-key' /cryptpad/main/start9/config.yaml)
   sed -i -e '/^ *installMethod.*/a\ \ \ \ adminKeys: ,' $CPAD_CONF
   sed -i "s~\(adminKeys:\).*[^,]~\1 \\[\ \"$ADMIN_PUBLIC_KEY\",\ \]~" $CPAD_CONF
 fi
 
-if [ ! -z "$ADMIN_EMAIL" ]; then
+if yq -e '.admin-email' /cryptpad/main/start9/config.yaml > /dev/null 2>&1; then
+  ADMIN_EMAIL=$(yq e '.admin-email' /cryptpad/main/start9/config.yaml)
   sed -i -e '/^ *installMethod.*/a\ \ \ \ adminEmail: ,' $CPAD_CONF
   sed -i "s~\(adminEmail:\).*[^,]~\1 '$ADMIN_EMAIL'~" $CPAD_CONF
 fi

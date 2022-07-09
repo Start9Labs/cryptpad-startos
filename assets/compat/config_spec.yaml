@@ -16,5 +16,20 @@ sandbox-tor-address:
   interface: sandbox
 use-tor-instead-of-lan:
   name: Use Tor Instead of Lan
-  description: Toggle this on to enable cryptpad to listen over Tor, and disable listening on .local. Toggle it off to switch back to .local.
+  description: >-
+    Toggle this on to enable cryptpad to listen over Tor (.onion), and disable
+    listening on .local. Toggle it off to switch back to .local.
   type: boolean
+  default: false
+admin-public-key:
+  type: string
+  nullable: true
+  name: Admin user public key
+  description: >-
+    The public key of the admin user. This can be found on your user's settings
+    page after logging in.
+admin-email:
+  type: string
+  nullable: true
+  name: Admin user email address
+  description: The email address of the admin user.
