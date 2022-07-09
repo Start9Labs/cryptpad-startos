@@ -2,10 +2,13 @@
 
 set -e
 
+CPAD_CONF=/cryptpad/config/config.js
 TOR_ADDRESS=$(yq e '.tor-address' /cryptpad/main/start9/config.yaml)
 SANDBOX_TOR_ADDRESS=$(yq e '.sandbox-tor-address' /cryptpad/main/start9/config.yaml)
 LAN_ADDRESS=$(echo "$TOR_ADDRESS" | sed -r 's/(.+)\.onion/\1.local/g')
 SANDBOX_LAN_ADDRESS=$(echo "$SANDBOX_TOR_ADDRESS" | sed -r 's/(.+)\.onion/\1.local/g')
+ADMIN_PUBLIC_KEY=$(yq e '.admin-public-key' /cryptpad/main/start9/config.yaml)
+ADMIN_EMAIL=$(yq e '.admin-email' /cryptpad/main/start9/config.yaml)
 
 if [ "$(yq ".use-tor-instead-of-lan" /cryptpad/main/start9/config.yaml)" = "true" ]; then
   CPAD_MAIN_DOMAIN="$TOR_ADDRESS"
@@ -17,9 +20,21 @@ else
   PROTOCOL=https
 fi
 
-cp /cryptpad/config/config.example.js  /cryptpad/config/config.js
+cp /cryptpad/config/config.example.js $CPAD_CONF
 
 sed -i  -e "s@\(httpUnsafeOrigin:\).*[^,]@\1 '$PROTOCOL://$CPAD_MAIN_DOMAIN'@" \
-        -e "s@\(^ *\).*\(httpSafeOrigin:\).*[^,]@\1\2 '$PROTOCOL://$CPAD_SANDBOX_DOMAIN'@" /cryptpad/config/config.js
+        -e "s@\(^ *\).*\(httpSafeOrigin:\).*[^,]@\1\2 '$PROTOCOL://$CPAD_SANDBOX_DOMAIN'@" $CPAD_CONF
+# sed -i  -e "s~\(adminEmail:\).*[^,]~\1 '$CPAD_ADMIN_EMAIL'~" -e '/^ *adminEmail.*/a\ \ \ \ adminKeys: ' $CPAD_CONF
+# sed -i  -e "s~\(adminKeys:\).*[^,]~\1 '$CPAD_ADMIN_EMAIL'~" $CPAD_CONF
+
+if [ ! -z "$ADMIN_PUBLIC_KEY" ]; then
+  sed -i -e '/^ *installMethod.*/a\ \ \ \ adminKeys: ,' $CPAD_CONF
+  sed -i "s~\(adminKeys:\).*[^,]~\1 \\[\ \"$ADMIN_PUBLIC_KEY\",\ \]~" $CPAD_CONF
+fi
+
+if [ ! -z "$ADMIN_EMAIL" ]; then
+  sed -i -e '/^ *installMethod.*/a\ \ \ \ adminEmail: ,' $CPAD_CONF
+  sed -i "s~\(adminEmail:\).*[^,]~\1 '$ADMIN_EMAIL'~" $CPAD_CONF
+fi
 
 exec tini npm start

@@ -24,5 +24,25 @@ export const getConfig: T.ExpectedExports.getConfig = compat.getConfig({
     "description": "Toggle this on to enable cryptpad to listen over Tor (.onion), and disable listening on .local. Toggle it off to switch back to .local.",
     "type": "boolean",
     "default": false, 
-  }
+  },
+  "admin-public-key": {
+    "type": "string",
+    "nullable": true,
+    "name": "Admin user public key",
+    "description": "The public key of the admin user. This can be found on your user's settings page after logging in.",
+    // "masked": true,
+    // "pattern": "^[a-zA-Z0-9_]+$",
+    // "pattern-description":
+      // "Must be alphanumeric (can contain underscore).",
+  },
+  "admin-email": {
+    "type": "string",
+    "nullable": true,
+    "name": "Admin user email address",
+    "description": "The email address of the admin user.",
+    // "masked": true,
+    // "pattern": "^[a-zA-Z0-9_]+$",
+    // "pattern-description":
+      // "Must be alphanumeric (can contain underscore).",
+  },
 })
