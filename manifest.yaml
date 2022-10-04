@@ -1,12 +1,13 @@
 id: cryptpad
 title: "CryptPad"
-version: 5.0.0
+version: 5.1.0
 release-notes: "Initial release of CryptPad for Embassy OS"
 license: AGPL
 wrapper-repo: "https://github.com/chrisguida/cryptpad-wrapper"
 upstream-repo: "https://github.com/xwiki-labs/cryptpad"
 support-site: "https://docs.cryptpad.fr/en/"
 marketing-site: "https://cryptpad.org/"
+donation-url: "https://opencollective.com/cryptpad/contribute"
 build: ["make"]
 description:
   short: Collaboration suite, end-to-end encrypted and open-source. 
@@ -45,7 +46,7 @@ health-checks:
     type: docker
     image: main
     entrypoint: check-web.sh
-    args: ["web"]
+    args: []
     io-format: json
     inject: true
 config:
@@ -53,17 +54,8 @@ config:
     type: script
   set:
     type: script
-properties: ~
-  # type: docker
-  # image: compat
-  # system: true
-  # entrypoint: compat
-  # args:
-  #   - properties
-  #   - /cryptpad
-  # mounts:
-  #   main: /cryptpad
-  # io-format: yaml
+properties:
+  type: script
 dependencies: {}
 volumes:
   main:
@@ -165,7 +157,12 @@ backup:
       - /cryptpad
     mounts:
       BACKUP: /mnt/backup
-      main: /root/data
+      main: /cryptpad/main
+      blob: /cryptpad/blob
+      block: /cryptpad/block
+      customize: /cryptpad/customize
+      data: /cryptpad/data
+      datastore: /cryptpad/datastore
     io-format: yaml
   restore:
     type: docker
@@ -179,7 +176,12 @@ backup:
       - /cryptpad
     mounts:
       BACKUP: /mnt/backup
-      main: /root/data
+      main: /cryptpad/main
+      blob: /cryptpad/blob
+      block: /cryptpad/block
+      customize: /cryptpad/customize
+      data: /cryptpad/data
+      datastore: /cryptpad/datastore
     io-format: yaml
 # actions:
 #   reset-root-user:
