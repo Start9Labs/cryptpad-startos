@@ -16,7 +16,7 @@ clean:
 	rm -f image.tar
 	rm -f cryptpad.s9pk
 
-cryptpad.s9pk: manifest.yaml assets/compat/* icon.png image.tar instructions.md scripts/embassy.js
+cryptpad.s9pk: manifest.yaml icon.png image.tar instructions.md scripts/embassy.js
 	embassy-sdk pack
 
 image.tar: Dockerfile docker_entrypoint.sh check-web.sh

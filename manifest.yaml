@@ -31,15 +31,6 @@ main:
     data: /cryptpad/data
     datastore: /cryptpad/datastore
 health-checks:
-  # version:
-  #   name: Database
-  #   success-message: Backend is reachable and responsive.
-  #   type: docker
-  #   image: main
-  #   entrypoint: health-check.sh
-  #   args: ["api"]
-  #   io-format: json
-  #   inject: true
   web:
     name: Web Interface
     success-message: CryptPad is ready to be visited in your browser.
@@ -70,8 +61,6 @@ volumes:
     type: data
   datastore:
     type: data
-  compat:
-    type: assets
 interfaces:
   main:
     name: Web UI
@@ -101,48 +90,6 @@ interfaces:
     protocols:
       - tcp
       - http
-  # main:
-  #   name: Web UI
-  #   description: CryptPad Main UI, handles sensitive computation like processing of cryptographic keys.
-  #   tor-config:
-  #     port-mapping:
-  #       80: "80"
-  #   lan-config:
-  #     443:
-  #       ssl: true
-  #       internal: 80
-  #   ui: true
-  #   protocols:
-  #     - tcp
-  #     - http
-  # sandbox:
-  #   name: Sandbox UI
-  #   description: Cryptpad Sandbox Interface, handles insensitive data and computation.
-  #   tor-config:
-  #     port-mapping:
-  #       80: "80"
-  #   lan-config:
-  #     443:
-  #       ssl: true
-  #       internal: 80
-  #   ui: true
-  #   protocols:
-  #     - tcp
-  #     - http
-  # sandbox:
-  #   name: Cryptpad Sandbox Interface
-  #   description: 
-  #   tor-config:
-  #     port-mapping:
-  #       80: "3001"
-  #   lan-config:
-  #     443:
-  #       ssl: true
-  #       internal: 3001
-  #   ui: true
-  #   protocols:
-  #     - tcp
-  #     - http
 alerts: {}
 backup:
   create:
@@ -183,19 +130,12 @@ backup:
       data: /cryptpad/data
       datastore: /cryptpad/datastore
     io-format: yaml
-# actions:
-#   reset-root-user:
-#     name: Reset Root User
-#     description: Resets your root user (the first user) to username "admin" and a random password; restores any lost admin privileges.
-#     warning: This will invalidate existing sessions and password managers if you have them set up.
-#     allowed-statuses:
-#       - stopped
-#     implementation:
-#       type: docker
-#       image: main
-#       system: false
-#       entrypoint: docker_entrypoint.sh
-#       args: ["reset-root-user"]
-#       mounts:
-#         main: /root
-#       io-format: json
+migrations:
+  from:
+    "*":
+      type: script
+      args: ["from"]
+  to:
+    "*":
+      type: script
+      args: ["to"]
