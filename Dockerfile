@@ -10,6 +10,8 @@ COPY ./cryptpad-docker /cryptpad-wrapper/cryptpad-docker
 
 WORKDIR /cryptpad-wrapper/cryptpad-docker/cryptpad
 
+COPY ./config.example.js /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
+
 RUN sed -i "s@//httpAddress: '::'@httpAddress: '0.0.0.0'@" /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
 RUN sed -i "s@installMethod: 'unspecified'@installMethod: 'docker-alpine'@" /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
 
