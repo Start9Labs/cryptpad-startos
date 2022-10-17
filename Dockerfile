@@ -10,6 +10,8 @@ COPY ./cryptpad-docker /cryptpad-wrapper/cryptpad-docker
 
 WORKDIR /cryptpad-wrapper/cryptpad-docker/cryptpad
 
+COPY ./config.example.js /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
+
 RUN sed -i "s@//httpAddress: '::'@httpAddress: '0.0.0.0'@" /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
 RUN sed -i "s@installMethod: 'unspecified'@installMethod: 'docker-alpine'@" /cryptpad-wrapper/cryptpad-docker/cryptpad/config/config.example.js
 
@@ -21,7 +23,7 @@ RUN npm install --production \
 # Create actual cryptpad image
 FROM node:16-alpine
 
-RUN apk add --no-cache bash tini
+RUN apk add --no-cache bash curl tini
 RUN wget https://github.com/mikefarah/yq/releases/download/v4.25.3/yq_linux_arm.tar.gz -O - |\
     tar xz && mv yq_linux_arm /usr/bin/yq
 

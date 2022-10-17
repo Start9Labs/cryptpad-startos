@@ -10,6 +10,15 @@ export const getConfig: T.ExpectedExports.getConfig = compat.getConfig({
     "target": "tor-address",
     "interface": "main"
   },
+  "lan-address": {
+    "name": "Tor Address",
+    "description": "The Tor address for the main ui.",
+    "type": "pointer",
+    "subtype": "package",
+    "package-id": "cryptpad",
+    "target": "lan-address",
+    "interface": "main"
+  },
   "sandbox-tor-address": {
     "name": "Tor Address",
     "description": "The Tor address for the sandbox ui.",
