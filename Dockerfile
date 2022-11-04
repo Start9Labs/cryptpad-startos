@@ -24,8 +24,8 @@ RUN npm install --production \
 FROM node:16-alpine
 
 RUN apk add --no-cache bash curl tini
-RUN wget https://github.com/mikefarah/yq/releases/download/v4.25.3/yq_linux_arm.tar.gz -O - |\
-    tar xz && mv yq_linux_arm /usr/bin/yq
+ARG PLATFORM
+RUN wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${PLATFORM} && chmod +x /usr/local/bin/yq
 
 # Create user and group for cryptpad so it does not run as root
 # RUN addgroup -g 4001 -S cryptpad \
