@@ -17,23 +17,45 @@ assets:
   license: LICENSE
   icon: icon.png
   instructions: instructions.md
-containers:
-  main:
-    image: main
-    mounts:
-      main: /cryptpad/main
-      blob: /cryptpad/blob
-      block: /cryptpad/block
-      customize: /cryptpad/customize
-      data: /cryptpad/data
-      datastore: /cryptpad/datastore
+# containers:
+#   main:
+#     image: main
+#     mounts:
+#       main: /cryptpad/main
+#       blob: /cryptpad/blob
+#       block: /cryptpad/block
+#       customize: /cryptpad/customize
+#       data: /cryptpad/data
+#       datastore: /cryptpad/datastore
+# main:
+#   type: script
 main:
-  type: script
+  type: docker
+  image: main
+  entrypoint: docker_entrypoint.sh
+  args: []
+  mounts:
+    main: /cryptpad/main
+    blob: /cryptpad/blob
+    block: /cryptpad/block
+    customize: /cryptpad/customize
+    data: /cryptpad/data
+    datastore: /cryptpad/datastore
+# health-checks:
+#   web:
+#     name: Web Interface
+#     success-message: CryptPad is ready to be visited in your browser.
+#     type: script
 health-checks:
   web:
     name: Web Interface
     success-message: CryptPad is ready to be visited in your browser.
-    type: script
+    type: docker
+    image: main
+    entrypoint: check-web.sh
+    args: []
+    io-format: json
+    inject: true
 config:
   get:
     type: script
