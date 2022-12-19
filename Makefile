@@ -20,7 +20,6 @@ verify: $(PKG_ID).s9pk
 	embassy-sdk verify s9pk $(PKG_ID).s9pk
 
 $(PKG_ID).s9pk: manifest.yaml icon.png instructions.md scripts/embassy.js LICENSE docker-images/aarch64.tar docker-images/x86_64.tar
-	if ! [ -z "$(ARCH)" ]; then cp docker-images/$(ARCH).tar image.tar; fi
 	embassy-sdk pack
 
 docker-images/aarch64.tar: Dockerfile docker_entrypoint.sh check-web.sh $(IPFS_SRC)
