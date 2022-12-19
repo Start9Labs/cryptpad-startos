@@ -1,22 +1,23 @@
-## Welcome to CryptPad
+# Using CryptPad
 
-Collaboration and privacy - Yes, you can have both.
+**Note**: It is recommended that you open a new browser tab to your Embassy while following these instructions. Otherwise, you will have to close and re-open them multiple times.
 
-CryptPad provides a full-fledged office suite with all the tools necessary for
-productive collaboration including: Rich Text, Spreadsheets, Code/Markdown,
-Kanban, Slides, Whiteboard and Forms.
+## Initial Setup
 
-Users can access this over TOR or Local, but not both at the same time. TOR
-performance can be slow. By default Local is selected, but you can change that
-on the config page. After saving that change the service must be restarted to
-take effect. NOTE: If you connected to your Embassy OS Server via TOR, when you
-click Launch UI it will use the TOR link to access CryptPad (regardless of this
-setting). If you connected via local, Launch UI will use the local link to
-access CryptPad.
+1. In Config, choose whether you want to use CryptPad over LAN (.local) or Tor (.onion). This can be changed at any time.
 
-When you first connect to your self hosted CryptPad - Sign Up and create an
-account. Then click on your name abbreviation in the upper right to bring up the
-account menu, click profile, view my profile, then copy public key. Go back to
-the Embassy Service config page and paste that key as the Admin user public key.
-This will allow you to access the CryptPad admin page. There you can manage many
-more configurations - including preventing any new users from signing up.
+**Note**: *embassyOS is unaware of the above setting. For example, if you are currently connected to your Embassy over Tor and you click "Launch UI", CryptPad will open CryptPad over Tor, even if you have CryptPad configured to use LAN. You will have to manually edit the URL bar in this case.*
+
+2. Launch your CryptPad UI, click "Sign Up", and create an account. Choose a good password. We recommend saving this password in a password manager, such as Vaultwarden on you Embassy.
+
+3. After creating your account, click your name abbreviation in the upper right corner. Click Profile --> View My Profile. Copy the public key from your profile page, then go back into CryptPad config on your Embassy and paste this public key into "Admin User Public Key". This grants your user the ability to access the Admin Panel, where you can manage more configurations - including preventing any new users from signing up.
+
+4. Optionally enter an email address into your CryptPad config settings. If you choose to share your CryptPad servers with others, this is the email they will see to contact you for assistance.
+
+## General Usage
+
+Check out the [CryptPad docs](https://docs.cryptpad.org) for detailed instructions on how to use CryptPad
+
+## Accessing the Admin Panel
+
+In embassyOS, go into your CryptPad "Properties" page. Copy/paste the "Admin" URL for LAN or Tor, and paste it into a new tab.
