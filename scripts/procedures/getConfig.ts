@@ -54,4 +54,14 @@ export const getConfig: T.ExpectedExports.getConfig = compat.getConfig({
     // "pattern-description":
       // "Must be alphanumeric (can contain underscore).",
   },
+  "max-upload-size": {
+    "type": "number",
+    "nullable": false,
+    "name": "Max upload size (MB)",
+    "description": "This sets the maximum size of any one file uploaded to the server. Anything larger than this size will be rejected. Defaults to 20MB if no value is provided.",
+    "units": "MiB",
+    "integral": true,
+    "default": 20,
+    "range": "[0,500]",
+  },
 })
