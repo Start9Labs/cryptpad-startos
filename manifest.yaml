@@ -1,7 +1,8 @@
 id: cryptpad
 title: "CryptPad"
-version: 5.1.0
-release-notes: "Initial release of CryptPad for Embassy OS"
+version: 5.2.1
+release-notes: |
+  * Update upstream to [5.2.1](https://github.com/xwiki-labs/cryptpad/releases/tag/5.2.1) (Also see release notes for [5.2.0](https://github.com/xwiki-labs/cryptpad/releases/tag/5.2.0))
 license: AGPL
 wrapper-repo: "https://github.com/chrisguida/cryptpad-wrapper"
 upstream-repo: "https://github.com/xwiki-labs/cryptpad"
