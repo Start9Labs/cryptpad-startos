@@ -23,9 +23,8 @@ RUN npm install --production \
 # Create actual cryptpad image
 FROM node:16-alpine
 
-RUN apk add --no-cache bash curl tini
-ARG PLATFORM
-RUN wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${PLATFORM} && chmod +x /usr/local/bin/yq
+RUN apk add --no-cache bash curl nginx tini yq && \
+    rm -f /var/cache/apk/*
 
 # Create user and group for cryptpad so it does not run as root
 # RUN addgroup -g 4001 -S cryptpad \
