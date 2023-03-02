@@ -44,5 +44,6 @@ if yq -e '.max-upload-size' /cryptpad/main/start9/config.yaml > /dev/null 2>&1; 
   sed -i -e '/^ *installMethod.*/a\ \ \ \ maxUploadSize: ,' $CPAD_CONF
   sed -i "s~\(maxUploadSize:\).*[^,]~\1 $MAX_UPLOAD_SIZE * 1024 * 1024~" $CPAD_CONF
 fi
+npm run build
 nginx
 exec tini npm start
