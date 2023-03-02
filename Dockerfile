@@ -32,7 +32,11 @@ RUN apk add --no-cache bash curl nginx tini yq && \
 
 # Copy cryptpad with installed modules
 COPY --from=build --chown=cryptpad /cryptpad-wrapper/cryptpad-docker/cryptpad /cryptpad
-# COPY cryptpad-docker/cryptpad/docs/example.nginx.conf /etc/nginx/nginx.conf
+
+# nginx config
+RUN rm /etc/nginx/nginx.conf
+ADD nginx.conf /etc/nginx/nginx.conf
+RUN chmod 644 /etc/nginx/nginx.conf
 
 # entrypoint
 ADD docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh

@@ -21,21 +21,21 @@ verify: $(PKG_ID).s9pk
 	embassy-sdk verify s9pk $(PKG_ID).s9pk
 
 # for rebuilding just the arm image. will include docker-images/x86_64.tar into the s9pk if it exists
-arm: docker-images/aarch64.tar scripts/embassy.js config.example.js
+arm: docker-images/aarch64.tar scripts/embassy.js config.example.js nginx.conf
 	embassy-sdk pack
 
 # for rebuilding just the x86 image. will include docker-images/aarch64.tar into the s9pk if it exists
-x86: docker-images/x86_64.tar scripts/embassy.js config.example.js
+x86: docker-images/x86_64.tar scripts/embassy.js config.example.js nginx.conf
 	embassy-sdk pack
 
 $(PKG_ID).s9pk: manifest.yaml icon.png instructions.md scripts/embassy.js LICENSE docker-images/aarch64.tar docker-images/x86_64.tar
 	embassy-sdk pack
 
-docker-images/aarch64.tar: Dockerfile docker_entrypoint.sh check-web.sh config.example.js $(CRYPTPAD_SRC)
+docker-images/aarch64.tar: Dockerfile docker_entrypoint.sh check-web.sh config.example.js nginx.conf $(CRYPTPAD_SRC)
 	mkdir -p docker-images
 	docker buildx build --tag start9/$(PKG_ID)/main:$(PKG_VERSION) --platform=linux/arm64 -o type=docker,dest=docker-images/aarch64.tar .
 
-docker-images/x86_64.tar: Dockerfile docker_entrypoint.sh check-web.sh config.example.js $(CRYPTPAD_SRC)
+docker-images/x86_64.tar: Dockerfile docker_entrypoint.sh check-web.sh config.example.js nginx.conf $(CRYPTPAD_SRC)
 	mkdir -p docker-images
 	docker buildx build --tag start9/$(PKG_ID)/main:$(PKG_VERSION) --platform=linux/amd64 -o type=docker,dest=docker-images/x86_64.tar .
 
