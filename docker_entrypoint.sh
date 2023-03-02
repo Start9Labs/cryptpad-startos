@@ -24,8 +24,8 @@ sed -i  -e "s@\(httpUnsafeOrigin:\).*[^,]@\1 '$PROTOCOL://$CPAD_MAIN_DOMAIN'@" \
         -e "s@\(^ *\).*\(httpSafeOrigin:\).*[^,]@\1\2 '$PROTOCOL://$CPAD_SANDBOX_DOMAIN'@" $CPAD_CONF
 # sed -i  -e "s~\(adminEmail:\).*[^,]~\1 '$CPAD_ADMIN_EMAIL'~" -e '/^ *adminEmail.*/a\ \ \ \ adminKeys: ' $CPAD_CONF
 # sed -i  -e "s~\(adminKeys:\).*[^,]~\1 '$CPAD_ADMIN_EMAIL'~" $CPAD_CONF
-sed -i 's#cpad_main_domain#'$CPAD_MAIN_DOMAIN'#g' /etc/nginx/nginx.conf
-sed -i 's#cpad_sandbox_domain#'$CPAD_SANDBOX_DOMAIN'#g' /etc/nginx/nginx.conf
+sed -i 's#cpad_main_domain#'$CPAD_MAIN_DOMAIN'#g' /etc/nginx/http.d/cryptpad.conf
+sed -i 's#cpad_sandbox_domain#'$CPAD_SANDBOX_DOMAIN'#g' /etc/nginx/http.d/cryptpad.conf
 
 if yq -e '.admin-public-key' /cryptpad/main/start9/config.yaml > /dev/null 2>&1; then
   ADMIN_PUBLIC_KEY=$(yq e '.admin-public-key' /cryptpad/main/start9/config.yaml)
