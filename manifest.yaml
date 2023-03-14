@@ -3,6 +3,7 @@ title: "CryptPad"
 version: 5.2.1
 release-notes: |
   * Update upstream to [5.2.1](https://github.com/xwiki-labs/cryptpad/releases/tag/5.2.1) (Also see release notes for [5.2.0](https://github.com/xwiki-labs/cryptpad/releases/tag/5.2.0))
+  * Fix checkup page / add properly configured reverse proxy
 license: AGPL
 wrapper-repo: "https://github.com/chrisguida/cryptpad-wrapper"
 upstream-repo: "https://github.com/xwiki-labs/cryptpad"
