@@ -29,27 +29,7 @@ curl -s https://hub.docker.com/v2/repositories/cryptpad/cryptpad/tags/version-<X
 ## Applying the bump
 
 1. `Dockerfile` — edit the `FROM cryptpad/cryptpad:version-X.Y.Z` line.
-2. `startos/versions/current.ts` — set `version` to `'<X.Y.Z>:0'` and rewrite `releaseNotes`
-   for all five locales. Bump the downstream revision (`:0` → `:1`) instead when the change is
-   wrapper-only with no upstream move. Do **not** add a downstream prerelease suffix — see
-   `versions.md`.
-
-   **Spin `2026.5.1:0` off into its own version file and keep it in `versions/index.ts`'s
-   `other[]`, still carrying `up: IMPOSSIBLE` — permanently.** It is what blocks the retired 0.3.x
-   package, whose `5.2.1` shares this package's id and sorts below ours, and the block lives in
-   the graph rather than in that file: a version's inbound range is anchored at its predecessor,
-   so dropping the node re-widens `canMigrateFrom` and lets `5.2.1` in again. This is the one case
-   where `versions.md`'s "don't create unnecessary version files" gives the wrong answer; the new
-   `current` gets an ordinary `up`, and only that first node keeps `IMPOSSIBLE`. Verify after
-   packing:
-
-   ```sh
-   start-cli s9pk inspect cryptpad_x86_64.s9pk manifest | jq -r .canMigrateFrom
-   ```
-
-   It must be lower-bounded (`>=2026.5.1:0 && …`), never a bare `<=`.
-
-3. **Re-verify the pinned upstream claims.** This is the part that silently rots. Several files
+2. **Re-verify the pinned upstream claims.** This is the part that silently rots. Several files
    cite upstream source at a specific tag (`@2026.10.0`) and encode assumptions about it. Check
    each against the new tag and update the marker. Since 2026.10.0 the server itself is the
    separate `cryptpad-server` npm package (version pinned in upstream's `package-lock.json`); its
@@ -69,12 +49,5 @@ curl -s https://hub.docker.com/v2/repositories/cryptpad/cryptpad/tags/version-<X
    | The IIFE module-factory wrapper | `customize.dist/application_config.js` | `writeLoginSalt.ts` reproduces this shape verbatim; a mismatch throws in the browser and hangs the SPA |
    | Port defaults, `installMethod`, `httpHost`, and every path key | `config/config.example.js`, `config/infra.example.js` | `startos/utils.ts` and `startos/cryptpadConfig.ts` |
 
-4. Update the `@<version>` markers in comments across `Dockerfile`, `startos/utils.ts`,
+3. Update the `@<version>` markers in comments across `Dockerfile`, `startos/utils.ts`,
    `startos/cryptpadConfig.ts`, `startos/setupState.ts`, `startos/main.ts`, `startos/interfaces.ts`.
-5. Run `npm test`. The decree-log parser has regression tests (`test/setupState.test.ts`)
-   covering the shapes upstream actually emits. They will not catch a *new* decree verb, but they
-   will catch a change to the shapes already relied on — cheap, and worth running before the
-   manual pass.
-6. Rebuild, then install on a StartOS box and drive it: both URL tasks, the setup-token task, all
-   four actions, and an office document opening — plus a backup and restore if the bump touches
-   the volume layout or `loginSalt`.
