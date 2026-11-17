@@ -5,7 +5,7 @@ export const manifest = setupManifest({
   id: 'cryptpad',
   title: 'CryptPad',
   license: 'AGPL-3.0',
-  packageRepo: 'https://github.com/Start9-Community/cryptpad-startos',
+  packageRepo: 'https://github.com/Start9Labs/cryptpad-startos',
   upstreamRepo: 'https://github.com/cryptpad/cryptpad',
   marketingUrl: 'https://cryptpad.org/',
   donationUrl: 'https://opencollective.com/cryptpad',
