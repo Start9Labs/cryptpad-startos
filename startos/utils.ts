@@ -2,9 +2,9 @@ import { decreeLog } from './fileModels/decreeLog'
 import { parseSetupState } from './setupState'
 
 /**
- * Constants extracted from upstream's config/infra.example.js at tag 2026.10.0.
+ * Constants extracted from upstream's config/infra.example.js at tag 2026.10.1.
  * Re-verify if you bump CryptPad version:
- *   https://github.com/cryptpad/cryptpad/blob/2026.10.0/config/infra.example.js
+ *   https://github.com/cryptpad/cryptpad/blob/2026.10.1/config/infra.example.js
  *
  * The point of these constants is to make every "magic number" in the wrapper
  * traceable to a specific upstream commit so a future maintainer can grep for
@@ -29,7 +29,7 @@ export const UPSTREAM_INSTALL_METHOD = 'docker' as const
  *  Docker only when CPAD_MAIN_DOMAIN is set, which we don't pass. */
 export const UPSTREAM_HTTP_ADDRESS = '0.0.0.0' as const
 
-/** CryptPad's container user — upstream Dockerfile@2026.10.0:
+/** CryptPad's container user — upstream Dockerfile@2026.10.1:
  *    groupadd cryptpad -g 4001 && useradd cryptpad -u 4001 -g 4001
  *  Any file or directory on the `main` volume that CryptPad needs to read
  *  or write must be chown'd to this UID/GID. The StartOS service runtime

@@ -14,7 +14,7 @@
  *
  * # Decree shape
  *
- * Verified against `cryptpad-server@1.0.3` (the server CryptPad 2026.10.0
+ * Verified against `cryptpad-server@1.0.7` (the server CryptPad 2026.10.1
  * ships) — the token is 32 random bytes as 64 hex characters, emitted as:
  *
  *     ["ADD_INSTALL_TOKEN", [token], "", +new Date()]
