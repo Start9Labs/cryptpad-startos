@@ -14,7 +14,7 @@ export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
   //   StartOS gives each MultiHost a distinct hostname. Both bindings target
   //   port 3000 inside the container; CryptPad's HTTP server serves the same
   //   content regardless of Host header (CSP differentiation is by URL path,
-  //   not host — verified in cryptpad-server@1.0.3 http.worker setHeaders). The
+  //   not host — verified in cryptpad-server@1.0.7 http.worker setHeaders). The
   //   browser is what enforces the sandbox boundary via origin.
   //
   // Why the sandbox interface is type 'api' (not 'ui'):
@@ -35,7 +35,7 @@ export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
   //   its non-user-facing bindings for the same reason.
   //
   // WebSocket: CryptPad's HTTP server on uiPort accepts the upgrade for
-  // /cryptpad_websocket itself (cryptpad-server@1.0.3 http.worker:
+  // /cryptpad_websocket itself (cryptpad-server@1.0.7 http.worker:
   // httpServer.on("upgrade", wsProxyUpgrade)) and relays it to its internal
   // front nodes. Those ports (infra.js) are never bound externally.
   const uiMulti = sdk.MultiHost.of(effects, 'ui-multi')

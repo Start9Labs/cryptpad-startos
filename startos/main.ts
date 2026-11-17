@@ -143,7 +143,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
 
   // Pre-write config.js and infra.js into the subcontainer's rootfs. The
   // upstream entrypoint copies an example only where a file is missing
-  // (docker-entrypoint.sh@2026.10.0), so ours are what the server loads.
+  // (docker-entrypoint.sh@2026.10.1), so ours are what the server loads.
   const configDir = `${appSub.rootfs}/cryptpad/config`
   const configInputs = {
     origin: mainOrigin,
@@ -163,7 +163,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
       // CPAD_INSTALL_OFFICE deliberately UNSET. The office editors are baked
       // into the image at build time (see Dockerfile); setting it would
       // re-run the install on every container start. CPAD_MAIN_DOMAIN is
-      // unset too: lib/load-config.js@2026.10.0 would rebind every internal
+      // unset too: lib/load-config.js@2026.10.1 would rebind every internal
       // node to 0.0.0.0, and infra.js already carries the origins.
     },
     ready: {

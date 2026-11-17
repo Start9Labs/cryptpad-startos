@@ -14,7 +14,7 @@ const KEY_FORMAT_HINT =
  * # Semantics are copied from upstream, not invented
  *
  * Mirrors `Keys.canonicalize` / `parseNewUser` in
- * src/common/common-signing-keys.js@2026.10.0. Two rules matter:
+ * src/common/common-signing-keys.js@2026.10.1. Two rules matter:
  *
  *   1. **Length is fixed at 44 characters** (an Ed25519 public key: 32 bytes
  *      base64 = 43 chars + '='). Upstream's `canonicalize` accepts a bare key

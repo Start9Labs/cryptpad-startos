@@ -7,10 +7,10 @@ import {
 
 /**
  * Generate config.js and infra.js — the two files CryptPad's server reads at
- * startup (lib/load-config.js@2026.10.0). We write both to the subcontainer
+ * startup (lib/load-config.js@2026.10.1). We write both to the subcontainer
  * rootfs at /cryptpad/config/ on every restart; the upstream entrypoint's
  * `[ ! -f /cryptpad/config/config.js ]` and `[ ! -f /cryptpad/config/infra.js ]`
- * guards (docker-entrypoint.sh@2026.10.0) mean our pre-written files bypass
+ * guards (docker-entrypoint.sh@2026.10.1) mean our pre-written files bypass
  * the entrypoint's copy-the-example branches entirely.
  *
  * Path overrides (filePath, blobPath, …) point at /data/* — the volume
